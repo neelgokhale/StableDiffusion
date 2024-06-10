@@ -107,7 +107,8 @@ class VAEDecoder(nn.Sequential):
             VAEResidualBlock(512, 256),
             VAEResidualBlock(256, 256),
             VAEResidualBlock(256, 256),
-            # (batch_size, 512, height/2, height/2) -> (batch_size, 512, height, height)
+            
+            # (batch_size, 512, height/2, width/2) -> (batch_size, 512, height, width)
             nn.Upsample(scale_factor=2),
             
             nn.Conv2d(256, 256, kernel_size=3, padding=1),
@@ -120,15 +121,17 @@ class VAEDecoder(nn.Sequential):
             
             nn.SiLU(),
             
+            # (batch_size, 128, height, width) -> (batch_size, 3, height, width)
             nn.Conv2d(128, 3, kernel_size=3, padding=1)
         )
         
     def forward(self, x: torch.Torch) -> torch.Tensor:
-        # x: (batch_size, 4, height/8, width/8):
+        # x: (batch_size, 4, height/8, width/8)
         
         x /= c.SCALING_CONST
         
         for module in self:
             x = module(x)
-            
+        
+        # (batch_size, 3, height, width)
         return x

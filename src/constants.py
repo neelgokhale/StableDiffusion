@@ -16,7 +16,17 @@ class Constant:
         else torch.device("cpu")
     
     # encoder / decoder
-    LOG_VAR_CLAMP_LOWER = -30
-    LOG_VAR_CLAMP_UPPER = 20    
-    SCALING_CONST = 0.18215
+    LOG_VAR_CLAMP_LOWER: int = -30
+    LOG_VAR_CLAMP_UPPER: int = 20    
+    SCALING_CONST: float = 0.18215
+    
+    # CLIP
+    CLIP_VOCAB_SIZE: int = 49408
+    CLIP_EMBEDDING_SIZE: int = 768
+    CLIP_MAX_SEQ_LEN: int = 77
+
+    GELU_CONST = 1.702
+    
+    # diffusion
+    TIME_EMBEDDING_SIZE = 320
     
